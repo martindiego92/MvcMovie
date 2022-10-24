@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  mvcmovie:
+    environment:
+        DBServer: "sqldata"
+    image: ${DOCKER_REGISTRY-}mvcmovie
+    build:
+      context: .
+      dockerfile: MvcMovie/Dockerfile
+    ports:
+        - "1800:80"
+    depends_on:
+        - sqldata
+
+  sqldata:
+     image: mcr.microsoft.com/mssql/server:2022-latest
+     container_name: db
+     environment:
+        - ACCEPT_EULA=Y
+        - MSSQL_SA_PASSWORD=Pass@word
+     ports:
+       - "1433:1433"
